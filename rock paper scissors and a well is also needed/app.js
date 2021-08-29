@@ -1,6 +1,6 @@
 const game = () => {
-    let playerScore = 0;
-    let computerScore = 0;
+    let pScore = 0;
+    let cScore = 0;
 
     const startGame = () => {
         const playButton = document.querySelector('.intro button');
@@ -17,6 +17,13 @@ const game = () => {
         const options = document.querySelectorAll(".options button");
         const playerHand = document.getElementById("player-hand");
         const computerHand = document.getElementById("computer-hand");
+        const hands = document.querySelectorAll('.hands img');
+
+        hands.forEach(hand => {
+            hand.addEventListener('animationend', function(){
+                this.style.animation = '';
+            })
+        })
 
         const computerOptions = ['Камень', 'Бумага', 'Ножницы', 'Колодец'];
 
@@ -24,16 +31,33 @@ const game = () => {
             option.addEventListener('click', function(){
                 const computerNumber = Math.floor( Math.random() * 4);
                 const computerChoice = computerOptions[computerNumber];
+                
+                setTimeout(()=>{
 
-                playerHand.src = `sprites/${this.textContent}.png`;
-                computerHand.src = `sprites/${computerChoice}.png`;
-      
+                    compareHands(this.textContent, computerChoice)
+
+                    playerHand.src = `sprites/${this.textContent}.png`;
+                    computerHand.src = `sprites/${computerChoice}.png`;
+                    
+                 
+                },2000);
+
+        
+                playerHand.style.animation = 'shakePlayer 2s ease';
+                computerHand.style.animation = 'shakeComputer 2s ease'; 
+                
+
             });
         });             
     };
 
 
-
+    const updateScore = () =>{
+        const playerScore = document.querySelector('.player-score p ');
+        const computerScore = document.querySelector('.computer-score p ');
+        playerScore.textContent = pScore;
+        computerScore.textContent = cScore;
+    }
       
 
     const compareHands = (playerChoice, computerChoice) => {
@@ -47,10 +71,14 @@ const game = () => {
         if(playerChoice === 'Камень'){
             if(computerChoice === 'Ножницы'){
                 winner.textContent = 'Победил игрок!';
+                pScore++;
+                updateScore();
                 return;
             }
             else{
                 winner.textContent = 'Победил компьютер!';
+                cScore++;
+                updateScore();
                 return;
             }
         }
@@ -58,10 +86,14 @@ const game = () => {
         if(playerChoice === 'Бумага'){
             if(computerChoice === 'Ножницы'){
                 winner.textContent = 'Победил компьютер!';
+                cScore++;
+                updateScore();
                 return;
             }
             else{
                 winner.textContent = 'Победил игрок!';
+                pScore++;
+                updateScore();
                 return;
             }
         }
@@ -69,10 +101,14 @@ const game = () => {
         if(playerChoice === 'Колодец'){
             if(computerChoice === 'Бумага'){
                 winner.textContent = 'Победил компьютер!';
+                cScore++;
+                updateScore();
                 return;
             }
             else{
                 winner.textContent = 'Победил игрок!';
+                pScore++;
+                updateScore();
                 return;
             }
         }
@@ -80,10 +116,14 @@ const game = () => {
         if(playerChoice === 'Ножницы'){
             if(computerChoice === 'Бумага'){
                 winner.textContent = 'Победил игрок!';
+                pScore++;
+                updateScore();
                 return;
             }
             else{
                 winner.textContent = 'Победил компьютер!';
+                cScore++;
+                updateScore();
                 return;
             }
         }
@@ -91,7 +131,7 @@ const game = () => {
 
     startGame();
     playMatch();
-    // updateScore();
+  
 }; 
 
 game();
