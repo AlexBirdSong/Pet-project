@@ -4,6 +4,7 @@ window.addEventListener('load', ()=>{
     let temperatureDescription = document.querySelector('.temperature-description');
     let temperatureDegree = document.querySelector('.temperature-degree');
     let locationTimezone = document.querySelector('.location-timezone');
+    let locationIcon = document.querySelector('.weather-icon');
 
     if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(position => {
@@ -19,7 +20,7 @@ window.addEventListener('load', ()=>{
                 return response.json();
             })
             .then(data =>{
-                const {description} = data.weather[0];
+                const {description,icon} = data.weather[0];
                 const {name} = data;
                 const {temp} = data.main;
 
@@ -27,6 +28,7 @@ window.addEventListener('load', ()=>{
                 locationTimezone.textContent = name;
                 temperatureDescription.textContent = description;
                 temperatureDegree.textContent = degreeConvertion;
+                locationIcon.innerHTML = `<img src='icons/${icon}.png'>`;
             });
 
         });
